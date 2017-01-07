@@ -71,3 +71,15 @@ class Rainbow(ColorCycleTemplate):
             pixelColor = strip.wheel(ledIndexRoundedAndWrappedAround) # Get the actual color out of the wheel
             strip.setPixelRGB(i, pixelColor);
         return 1 # All pixels are set in the buffer, so repaint the strip now
+
+
+
+class Off(ColorCycleTemplate):
+
+    def init(self, strip, numLEDs):
+    	  for led in range(0, numLEDs):
+    	  	  strip.setPixelRGB(led,0x0) # Paint white
+
+    def update(self, strip, numLEDs, numStepsPerCycle, currentStep, currentCycle):
+    	  # Do nothing: Init lit the strip, and update just keeps it this way
+    	  return 0
