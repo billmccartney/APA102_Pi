@@ -3,12 +3,20 @@ from time import sleep
 running = True
 
 WAKE_ON_LAN = "/usr/bin/wakeonlan"
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+import colorschemes
 
 def background(arg):
   global running
   while running:
-    print( "running")
-    sleep(1)
+    myCycle = colorschemes.Rainbow(numLEDs=numLEDs, pauseValue=0, numStepsPerCycle = 255, numCycles = 2, globalBrightness=10)
+    myCycle.start()
+    
+#    print( "running")
+#    sleep(1)
 
 from flask import Flask
 import subprocess
