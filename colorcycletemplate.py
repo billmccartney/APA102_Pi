@@ -52,18 +52,18 @@ class ColorCycleTemplate:
     def startLoop(self):
         self.strip = apa102.APA102(numLEDs=self.numLEDs, globalBrightness=self.globalBrightness, order=self.order) # Initialize the strip
         self.strip.clearStrip()
-        self.init(strip, self.numLEDs) # Call the subclasses init method
-        strip.show()
+        self.init(self.strip, self.numLEDs) # Call the subclasses init method
+        self.strip.show()
         self.currentCycle = 0
        
     def iterate(self):
-        needRepaint = self.update(strip, self.numLEDs, self.numStepsPerCycle, self.currentStep, self.currentCycle) # Call the subclasses update method
-        if (needRepaint): strip.show() # Display, only if required
+        needRepaint = self.update(self.strip, self.numLEDs, self.numStepsPerCycle, self.currentStep, self.currentCycle) # Call the subclasses update method
+        if (needRepaint): self.strip.show() # Display, only if required
         time.sleep(self.pauseValue) # Pause until the next step
  
 
     def endLoop(self):
-        self.cleanup(strip)
+        self.cleanup(self.strip)
         
 
     """
