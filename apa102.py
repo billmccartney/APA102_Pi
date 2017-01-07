@@ -1,4 +1,8 @@
-import spidev
+import platform
+if(platform.system() == "Windows"):
+  import fakespi as spidev  
+else:
+  import spidev
 
 """
 Driver for APA102 LEDS (aka "DotStar").
