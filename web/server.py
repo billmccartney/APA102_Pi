@@ -9,15 +9,14 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 import colorschemes
 
+numLEDs = 100
+
 def background(arg):
   global running
   while running:
-    myCycle = colorschemes.Rainbow(numLEDs=numLEDs, pauseValue=0, numStepsPerCycle = 255, numCycles = 2, globalBrightness=10)
-    myCycle.start()
-    
-#    print( "running")
-#    sleep(1)
-
+    #myCycle = colorschemes.Rainbow(numLEDs=numLEDs, pauseValue=0.00001, numStepsPerCycle = 255, numCycles = 2, globalBrightness=10)
+    #myCycle.start()
+    sleep(0.001)
 from flask import Flask
 import subprocess
 app = Flask(__name__, static_url_path="/static", static_folder="static")
