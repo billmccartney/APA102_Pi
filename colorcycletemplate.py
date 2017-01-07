@@ -14,7 +14,7 @@ class ColorCycleTemplate:
         self.numCycles = numCycles # How many times will the program run
         self.globalBrightness = globalBrightness # Brightness of the strip
         self.order = order # Strip colour ordering
-
+        self.strip = None
     """
     void init()
     This method is called to initialize a color program.
@@ -49,26 +49,38 @@ class ColorCycleTemplate:
         strip.clearStrip()
         strip.cleanup()
 
+    def startLoop(self):
+        self.strip = apa102.APA102(numLEDs=self.numLEDs, globalBrightness=self.globalBrightness, order=self.order) # Initialize the strip
+        self.strip.clearStrip()
+        self.init(strip, self.numLEDs) # Call the subclasses init method
+        strip.show()
+        self.currentCycle = 0
+       
+    def iterate(self):
+        needRepaint = self.update(strip, self.numLEDs, self.numStepsPerCycle, self.currentStep, self.currentCycle) # Call the subclasses update method
+        if (needRepaint): strip.show() # Display, only if required
+        time.sleep(self.pauseValue) # Pause until the next step
+ 
+
+    def endLoop(self):
+        self.cleanup(strip)
+        
+
     """
     Start the actual work
     """
     def start(self):
         try:
-            strip = apa102.APA102(numLEDs=self.numLEDs, globalBrightness=self.globalBrightness, order=self.order) # Initialize the strip
-            strip.clearStrip()
-            self.init(strip, self.numLEDs) # Call the subclasses init method
-            strip.show()
-            currentCycle = 0
+            self.startLoop()
             while True:  # Loop forever (no 'for' here due to the possibility of infinite loops)
                 for currentStep in range (self.numStepsPerCycle):
-                    needRepaint = self.update(strip, self.numLEDs, self.numStepsPerCycle, currentStep, currentCycle) # Call the subclasses update method
-                    if (needRepaint): strip.show() # Display, only if required
-                    time.sleep(self.pauseValue) # Pause until the next step
-                currentCycle += 1
+                    self.currentStep=currentStep
+                    self.iterate()
+                self.currentCycle += 1
                 if (self.numCycles != -1):
-                    if (currentCycle >= self.numCycles): break
+                    if (self.currentCycle >= self.numCycles): break
             # Finished, cleanup everything
-            self.cleanup(strip)
+            self.endLoop()
 
         except KeyboardInterrupt:  # Ctrl-C can halt the light program
             print('Interrupted...')
