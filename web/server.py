@@ -10,13 +10,15 @@ sys.path.insert(0,parentdir)
 import colorschemes
 
 numLEDs = 100
-
+title = "Rainbow"
 def background(arg):
   global running
   while running:
-    #myCycle = colorschemes.Rainbow(numLEDs=numLEDs, pauseValue=0.00001, numStepsPerCycle = 255, numCycles = 2, globalBrightness=10)
-    #myCycle.start()
-    sleep(0.001)
+    sceme = eval("colorschemes."+title)
+    print("title = ",title)
+    myCycle = sceme(numLEDs=numLEDs, pauseValue=0.00001, numStepsPerCycle = 255, numCycles = 2, globalBrightness=10)
+    myCycle.start()
+    #sleep(0.001)
 from flask import Flask
 import subprocess
 app = Flask(__name__, static_url_path="/static", static_folder="static")
@@ -29,6 +31,15 @@ def hello():
 def wakeonlan(mac):
   print("mac = ",mac)
   subprocess.call(WAKE_ON_LAN, mac)
+  return "sent packet"
+
+#Here's a full set of arguments we could add
+#numLEDs, pauseValue = 0, numStepsPerCycle = 100, numCycles = -1, globalBrightness = 4
+@app.route("/light/<name>/<value>")
+def setLight(name, value):
+  print("setting = ",name, value)
+  global title
+  title = name
   return "sent packet"
 
 
