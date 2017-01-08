@@ -30,7 +30,7 @@ def hello():
 @app.route("/wakeonlan/<mac>")
 def wakeonlan(mac):
   print("mac = ",mac)
-  subprocess.call(WAKE_ON_LAN, mac)
+  subprocess.call([WAKE_ON_LAN, mac])
   return "sent packet"
 
 #Here's a full set of arguments we could add
