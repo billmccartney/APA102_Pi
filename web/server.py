@@ -2,7 +2,8 @@ from threading import Thread
 from time import sleep
 running = True
 new_data = True
-lights = [1,1,1,1]
+numLEDs = 100
+lights = [0xffffff] * numLEDs
 
 WAKE_ON_LAN = "/usr/bin/wakeonlan"
 import os,sys,inspect
@@ -10,9 +11,9 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 import colorschemes
+import apa102
 
 
-numLEDs = 100
 def background(arg):
   global running, lights, new_data
   strip = apa102.APA102(numLEDs=200, globalBrightness=4, order="rgb") # Initialize the strip
@@ -21,16 +22,17 @@ def background(arg):
   while running:
     if(new_data):
       try:
-        for i in xrange(0, 4):
-          if(lights[i]):
-            strip.setPixelRGB(i,0xff,0xff,0xff)
-          else:
-            strip.setPixelRGB(i,0,0,0)
+        for i in range(0, 4):
+          strip.setPixelRGB(i,lights[i])
         new_data = False
         strip.show()
       except:
-        print "Failed to run"
-
+        import traceback
+        print(traceback.format_exc())
+        print("Failed to run")
+    else:
+      sleep(0.03)
+  strip.cleanup()
 title = "Rainbow"
 """
 def background(arg):
@@ -57,7 +59,7 @@ def hello():
 def leds(number, value):
   global new_data
   global lights
-  lights[number] = value
+  lights[int(number)] = int(value)
   new_data = True
   return "success"
 
