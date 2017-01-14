@@ -67,6 +67,9 @@ def leds(number, value):
 def multiple_leds(start, end, value):
   global new_data
   global lights
+  start = int(start)
+  end = int(end)
+  value = int(value)
   if(start > end):
     return "Failed"
   for index in range(start, end+1):
