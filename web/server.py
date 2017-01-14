@@ -63,6 +63,18 @@ def leds(number, value):
   new_data = True
   return "success"
 
+@app.route("/multiple_leds/<start>/<end>/<value>")
+def multiple_leds(start, end, value):
+  global new_data
+  global lights
+  if(start > end):
+    return "Failed"
+  for index in xrange(start, end+1):
+    lights[int(index)] = int(value)
+  new_data = True
+  return "success"
+
+
 @app.route("/wakeonlan/<mac>")
 def wakeonlan(mac):
   print("mac = ",mac)
