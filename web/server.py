@@ -94,7 +94,7 @@ def setLight(name, value):
 if __name__ == "__main__":
   thread = Thread(target = background, args = (10, ))
   thread.start()
-  app.run(host= '0.0.0.0', threaded=True)
+  app.run(host= '0.0.0.0', threaded=True, debug=True)
   running = False
   thread.join()
 #    app.run()
