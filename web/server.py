@@ -2,7 +2,7 @@ from threading import Thread
 from time import sleep
 running = True
 new_data = True
-numLEDs = 100
+numLEDs = 1000
 lights = [0xffffff] * numLEDs
 
 WAKE_ON_LAN = "/usr/bin/wakeonlan"
@@ -15,14 +15,14 @@ import apa102
 
 
 def background(arg):
-  global running, lights, new_data
-  strip = apa102.APA102(numLEDs=200, globalBrightness=4, order="rgb") # Initialize the strip
+  global running, lights, new_data, numLEDs
+  strip = apa102.APA102(numLEDs=numLEDs, globalBrightness=4, order="rgb") # Initialize the strip
   strip.clearStrip()
   strip.show()
   while running:
     if(new_data):
       try:
-        for i in range(0, 4):
+        for i in range(0, numLEDs):
           strip.setPixelRGB(i,lights[i])
         new_data = False
         strip.show()
