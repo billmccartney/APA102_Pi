@@ -69,7 +69,7 @@ def multiple_leds(start, end, value):
   global lights
   if(start > end):
     return "Failed"
-  for index in xrange(start, end+1):
+  for index in range(start, end+1):
     lights[int(index)] = int(value)
   new_data = True
   return "success"
