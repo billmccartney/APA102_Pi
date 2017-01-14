@@ -16,7 +16,7 @@ import apa102
 
 def background(arg):
   global running, lights, new_data, numLEDs
-  strip = apa102.APA102(numLEDs=numLEDs, globalBrightness=4, order="rgb") # Initialize the strip
+  strip = apa102.APA102(numLEDs=numLEDs, globalBrightness=31, order="rgb") # Initialize the strip
   strip.clearStrip()
   strip.show()
   while running:
